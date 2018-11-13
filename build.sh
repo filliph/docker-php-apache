@@ -1,7 +1,7 @@
 #!/bin/bash
 
 _filter="$1"
-_test="${TEST:-yes}"
+_test="${TEST:-no}"
 _push="$PUSH"
 
 set -e
