@@ -14,7 +14,7 @@ for d in */ ; do
     if [ ! -f Dockerfile ]; then
         continue
     fi
-    if [ ! -z "$_filter" -a "x$d" != "x$_filter" ]; then
+    if [[ ! -z "$_filter" && $d =~ $_filter ]]; then
         echo "Skipped $d (_filter == $_filter)" >&2
         continue
     fi
@@ -26,7 +26,7 @@ for d in */ ; do
         IS_PHP=1
     fi
     VERSION="$( head -n 1 "VERSION" )"
-    TAG="dbtech-devel:${d%?}"
+    TAG="belazor/dbtech-devel:${d%?}"
     TAG_WITH_VERSION="$TAG-$VERSION"
 
     docker build \
