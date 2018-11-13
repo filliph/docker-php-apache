@@ -3,7 +3,7 @@
 set -e
 
 DOCKER_PHP_EXT_INSTALL="bcmath bz2 calendar dba exif gettext iconv imap intl mbstring mcrypt mysqli pdo_dblib pcntl pspell soap sockets xmlrpc xsl zip"
-DOCKER_PHP_PECL_INSTALL="apc igbinary memcache redis"
+DOCKER_PHP_PECL_INSTALL="igbinary memcache redis"
 
 RUN_PACKAGES=""
 TMP_PACKAGES=""
@@ -69,8 +69,8 @@ esac
 export CFLAGS="$PHP_CFLAGS" CPPFLAGS="$PHP_CPPFLAGS" LDFLAGS="$PHP_LDFLAGS"
 
 eval "docker-php-ext-install $DOCKER_PHP_EXT_INSTALL"
-eval "pecl install imagick $DOCKER_PHP_PECL_INSTALL"
-eval "docker-php-ext-enable imagick $DOCKER_PHP_PECL_INSTALL"
+eval "pecl install imagick apcu-4.0.11 $DOCKER_PHP_PECL_INSTALL"
+eval "docker-php-ext-enable imagick apcu $DOCKER_PHP_PECL_INSTALL"
 /tmp/build_apache.sh
 
 # clean up

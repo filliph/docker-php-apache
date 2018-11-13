@@ -2,8 +2,8 @@
 
 set -e
 
-DOCKER_PHP_EXT_INSTALL="bcmath bz2 calendar dba exif gettext iconv imap intl mbstring mcrypt mysqli pdo_dblib pcntl pspell soap sockets xmlrpc xsl zip"
-DOCKER_PHP_PECL_INSTALL="apc igbinary memcache redis"
+DOCKER_PHP_EXT_INSTALL="bcmath bz2 calendar dba exif gd gettext gmp iconv imap intl mbstring mysqli opcache pdo_dblib pcntl pspell soap sockets xmlrpc xsl zip"
+DOCKER_PHP_PECL_INSTALL="apcu igbinary memcached redis"
 
 RUN_PACKAGES=""
 TMP_PACKAGES=""
@@ -51,7 +51,7 @@ case "$DOCKER_PHP_EXT_INSTALL" in
         --with-jpeg-dir=/usr/include/ \
         --with-png-dir=/usr/include/ \
         --with-webp-dir=/usr/include/ \
-        --with-xpm-dir=/usr/include
+        --with-xpm-dir=/usr/include/
     ;;
 esac
 
@@ -68,10 +68,12 @@ esac
 # https://github.com/docker-library/php/issues/105#issuecomment-278114879
 export CFLAGS="$PHP_CFLAGS" CPPFLAGS="$PHP_CPPFLAGS" LDFLAGS="$PHP_LDFLAGS"
 
+docker-php-source extract
 eval "docker-php-ext-install $DOCKER_PHP_EXT_INSTALL"
 eval "pecl install imagick $DOCKER_PHP_PECL_INSTALL"
 eval "docker-php-ext-enable imagick $DOCKER_PHP_PECL_INSTALL"
 /tmp/build_apache.sh
+docker-php-source delete
 
 # clean up
 pecl clear-cache

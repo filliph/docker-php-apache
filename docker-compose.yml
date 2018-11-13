@@ -1,0 +1,60 @@
+version: "3.2"
+services:
+    php53:
+        build: './php-apache-53/'
+        networks:
+            - backend
+        ports:
+            - "8053:80"
+        volumes:
+            - /www/public_html/:/var/www/html/
+    php54:
+        build: './php-apache-54/'
+        networks:
+            - backend
+        ports:
+            - "8054:80"
+        volumes:
+            - /www/public_html/:/var/www/html/
+    php55:
+        build: './php-apache-55/'
+        networks:
+            - backend
+        ports:
+            - "8055:80"
+        volumes:
+            - /www/public_html/:/var/www/html/
+    php56:
+        build: './php-apache-56/'
+        networks:
+            - backend
+        ports:
+            - "8056:80"
+        volumes:
+            - /www/public_html/:/var/www/html/
+    php70:
+        build: './php-apache-70/'
+        networks:
+            - backend
+        ports:
+            - "8070:80"
+        volumes:
+            - /www/public_html/:/var/www/html/
+    php71:
+        build: './php-apache-71/'
+        networks:
+            - backend
+        ports:
+            - "8071:80"
+        volumes:
+            - /www/public_html/:/var/www/html/
+    php72:
+        build: './php-apache-72/'
+        networks:
+            - backend
+        ports:
+            - "8072:80"
+        volumes:
+            - /www/public_html/:/var/www/html/
+networks:
+    backend:

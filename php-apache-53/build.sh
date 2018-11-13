@@ -2,7 +2,7 @@
 
 set -e
 
-DOCKER_PHP_EXT_INSTALL="bcmath bz2 calendar dba exif gettext iconv imap intl mcrypt mysqli pdo_dblib pcntl pspell soap sockets xmlrpc xsl zip"
+DOCKER_PHP_EXT_INSTALL="bcmath bz2 calendar dba exif gettext iconv imap intl mbstring mcrypt mysqli pdo_dblib pcntl pspell soap sockets xmlrpc xsl zip"
 DOCKER_PHP_PECL_INSTALL="apc igbinary memcache redis"
 
 RUN_PACKAGES=""

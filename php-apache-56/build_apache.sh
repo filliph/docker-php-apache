@@ -2,8 +2,6 @@
 
 set -e
 
-eval "mkdir /etc/apache2/logs/"
-
 # phpcs
 pear install PHP_CodeSniffer
 curl -Lo /tmp/PHPCompatibility.tar.gz "https://github.com/wimg/PHPCompatibility/archive/${PHP_COMPATIBILITY_VERSION}.tar.gz"
