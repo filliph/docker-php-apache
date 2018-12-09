@@ -12,6 +12,9 @@ ENV COMPOSER_VERSION 1.6.5
 # https://github.com/wimg/PHPCompatibility/releases
 ENV PHP_COMPATIBILITY_VERSION 8.1.0
 
+RUN usermod -u 501 www-data
+RUN usermod -G staff www-data
+
 COPY override.ini /usr/local/etc/php/conf.d/
 
 COPY . /tmp/.
