@@ -1,4 +1,4 @@
-FROM php:7.0.32-apache-stretch
+FROM php:7.0.33-apache-stretch
 
 ARG DOCKER_PHP_EXT_INSTALL
 ARG DOCKER_PHP_PECL_INSTALL
