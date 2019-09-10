@@ -14,7 +14,7 @@ for d in */ ; do
     if [ ! -f Dockerfile ]; then
         continue
     fi
-    if [[ ! -z "$_filter" && $d =~ $_filter ]]; then
+    if [[ ! -z "$_filter" && ! $d =~ $_filter ]]; then
         echo "Skipped $d (_filter == $_filter)" >&2
         continue
     fi
