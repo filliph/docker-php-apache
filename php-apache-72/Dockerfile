@@ -1,6 +1,11 @@
-FROM php:7.2.22-apache-stretch
+FROM php:7.2.32-apache-stretch
 
-RUN apt-get update && apt-get install -y ssl-cert && rm -rf /var/lib/apt/lists/*
+RUN  apt-get update \
+  && apt-get install -y ssl-cert xfonts-utils fontconfig libxrender1 xfonts-75dpi xfonts-base libjpeg62-turbo libxext6 wget telnet redis-server \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.stretch_amd64.deb \
+  && dpkg -i wkhtmltox_0.12.5-1.stretch_amd64.deb
 
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/ssl-cert-snakeoil.key -out /etc/ssl/certs/ssl-cert-snakeoil.pem -subj "/C=AT/ST=Vienna/L=Vienna/O=Security/OU=Development/CN=example.com"
 
