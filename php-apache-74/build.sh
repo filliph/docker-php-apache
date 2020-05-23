@@ -2,7 +2,7 @@
 
 set -e
 
-DOCKER_PHP_EXT_INSTALL="bcmath bz2 calendar dba exif gd gettext gmp iconv imap intl mbstring mysqli pdo_dblib pcntl pspell soap sockets xmlrpc xsl zip"
+DOCKER_PHP_EXT_INSTALL="bcmath bz2 calendar dba exif gd gettext gmp iconv imap intl mbstring mysqli pdo_mysql pcntl pspell soap sockets xmlrpc xsl zip"
 DOCKER_PHP_PECL_INSTALL="apcu igbinary memcached redis"
 
 RUN_PACKAGES=""
@@ -18,6 +18,8 @@ TMP_PACKAGES="$TMP_PACKAGES libldap2-dev"
 RUN_PACKAGES="$RUN_PACKAGES libmcrypt-dev"
 RUN_PACKAGES="$RUN_PACKAGES libpspell-dev"
 RUN_PACKAGES="$RUN_PACKAGES libxslt1-dev"
+RUN_PACKAGES="$RUN_PACKAGES libzip-dev"
+RUN_PACKAGES="$RUN_PACKAGES libonig-dev"
 TMP_PACKAGES="$TMP_PACKAGES libfreetype6-dev"        # gd
 RUN_PACKAGES="$RUN_PACKAGES libgd3"                  # gd
 TMP_PACKAGES="$TMP_PACKAGES libgd-dev"               # gd
@@ -34,7 +36,7 @@ RUN_PACKAGES="$RUN_PACKAGES libicu-dev"              # icu
 RUN_PACKAGES="$RUN_PACKAGES libxpm4"                 # gd
 TMP_PACKAGES="$TMP_PACKAGES libxpm-dev"              # gd
 TMP_PACKAGES="$TMP_PACKAGES libwebp-dev"             # gd
-RUN_PACKAGES="$RUN_PACKAGES mysql-client"
+RUN_PACKAGES="$RUN_PACKAGES mariadb-client"
 TMP_PACKAGES="$TMP_PACKAGES git"
 RUN_PACKAGES="$RUN_PACKAGES unzip"
 eval "apt update && apt upgrade -y && apt-get update && apt-get install --no-install-recommends -y $TMP_PACKAGES $RUN_PACKAGES"
@@ -45,12 +47,10 @@ case "$DOCKER_PHP_EXT_INSTALL" in
   *gd*)
     echo 'Preparing module: gd...'
     docker-php-ext-configure gd \
-        --with-gd=/usr/include \
-        --with-freetype-dir=/usr/include/ \
-        --with-jpeg-dir=/usr/include/ \
-        --with-png-dir=/usr/include/ \
-        --with-webp-dir=/usr/include/ \
-        --with-xpm-dir=/usr/include/
+        --with-freetype=/usr/include/ \
+        --with-jpeg=/usr/include/ \
+        --with-webp=/usr/include/ \
+        --with-xpm=/usr/include/
     ;;
 esac
 

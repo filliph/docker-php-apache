@@ -47,7 +47,6 @@ case "$DOCKER_PHP_EXT_INSTALL" in
     echo 'Preparing module: gd...'
     docker-php-ext-configure gd \
         --with-gd=/usr/include \
-       	--enable-gd-native-ttf \
         --with-freetype-dir=/usr/include/ \
         --with-jpeg-dir=/usr/include/ \
         --with-png-dir=/usr/include/ \

@@ -1,11 +1,15 @@
-FROM php:7.2.31-apache-stretch
+FROM php:7.4.6-apache-buster
 
 RUN  apt-get update \
-  && apt-get install -y ssl-cert xfonts-utils fontconfig libxrender1 xfonts-75dpi xfonts-base libjpeg62-turbo libxext6 wget telnet redis-server \
-  && rm -rf /var/lib/apt/lists/*
+  && apt-get install -y ssl-cert xfonts-utils fontconfig libxrender1 xfonts-75dpi xfonts-base libjpeg62-turbo libxext6 wget telnet redis-server
 
-RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.stretch_amd64.deb \
-  && dpkg -i wkhtmltox_0.12.5-1.stretch_amd64.deb
+RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.buster_amd64.deb \
+  && dpkg -i wkhtmltox_0.12.5-1.buster_amd64.deb
+
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN apt-get -y install nodejs \
+  && rm -rf /var/lib/apt/lists/*
+RUN npm install
 
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/ssl-cert-snakeoil.key -out /etc/ssl/certs/ssl-cert-snakeoil.pem -subj "/C=AT/ST=Vienna/L=Vienna/O=Security/OU=Development/CN=example.com"
 
@@ -29,6 +33,8 @@ RUN usermod -u 501 www-data
 RUN usermod -G staff www-data
 
 COPY override.ini /usr/local/etc/php/conf.d/
+
+COPY bash_profile /root/.bash_profile
 
 COPY . /tmp/.
 RUN /tmp/build.sh
