@@ -1,60 +1,61 @@
-version: "3.2"
+version: '2'
 services:
-    php53:
-        build: './php-apache-53/'
-        networks:
-            - backend
-        ports:
-            - "8053:80"
-        volumes:
-            - /www/public_html/:/var/www/html/
-    php54:
-        build: './php-apache-54/'
-        networks:
-            - backend
-        ports:
-            - "8054:80"
-        volumes:
-            - /www/public_html/:/var/www/html/
-    php55:
-        build: './php-apache-55/'
-        networks:
-            - backend
-        ports:
-            - "8055:80"
-        volumes:
-            - /www/public_html/:/var/www/html/
-    php56:
-        build: './php-apache-56/'
-        networks:
-            - backend
-        ports:
-            - "8056:80"
-        volumes:
-            - /www/public_html/:/var/www/html/
-    php70:
-        build: './php-apache-70/'
-        networks:
-            - backend
-        ports:
-            - "8070:80"
-        volumes:
-            - /www/public_html/:/var/www/html/
-    php71:
-        build: './php-apache-71/'
-        networks:
-            - backend
-        ports:
-            - "8071:80"
-        volumes:
-            - /www/public_html/:/var/www/html/
-    php72:
-        build: './php-apache-72/'
-        networks:
-            - backend
-        ports:
-            - "8072:80"
-        volumes:
-            - /www/public_html/:/var/www/html/
+  mysql:
+    container_name: "mariadb${DOCKER_MARIADB_VERSION}"
+    restart: always
+    image: "belazor/dbtech-devel:mariadb-${DOCKER_MARIADB_VERSION}"
+    environment:
+      MYSQL_ROOT_PASSWORD: 'revanza' # TODO: Change this
+      MYSQL_USER: 'root'
+      MYSQL_PASS: 'revanza'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+    volumes:
+      - /System/Volumes/Data/Users/Shared/www/mysql:/var/lib/mysql
+    networks:
+      - app_mysql_net  
+
+  app:
+    depends_on:
+      - mysql
+    image: "belazor/dbtech-devel:php-apache-${DOCKER_PHP_VERSION}"
+    container_name: "php${DOCKER_PHP_VERSION}"
+    ports:
+        - "${DOCKER_PHP_PORT}:80"
+        - "443:443"
+    expose:
+      # Opens ports 80 and 443 on the container
+      - '80'
+      - '443'
+    volumes:
+      # - /System/Volumes/Data/Users/Shared/www/public_html:/var/www/html
+      # - /System/Volumes/Data/Users/Shared/www/git:/var/www/html
+      - "nfsmount:/var/www/html"
+      - "nfsmount2:/System/Volumes/Data/Users/Shared/www/git"
+    links:
+      - mysql
+    networks:
+      - app_mysql_net
+
+volumes:
+  nfsmount:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
+      device: ":/System/Volumes/Data/Users/Shared/www/public_html"
+  nfsmount2:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
+      device: ":/System/Volumes/Data/Users/Shared/www/git"
+
 networks:
-    backend:
+  app_mysql_net:
+    driver: bridge

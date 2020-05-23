@@ -1,0 +1,34 @@
+version: '2'
+services:
+  app:
+    image: "thecodingmachine/php:7.2-v2-apache"
+    ports:
+        - "80:80"
+    volumes:
+      - "nfsmount:/var/www/html"
+      - "nfsmount2:/System/Volumes/Data/Users/Shared/www/git"
+    environment:
+      PHP_EXTENSION_OPCACHE: 0
+
+      # Will set the extension XDebug
+      PHP_EXTENSION_XDEBUG: 1
+
+      # This XDebug configuration is only for CLI debug
+      PHP_INI_XDEBUG__REMOTE_PORT: 10000
+
+      PHP_IDE_CONFIG: "serverName=docker_xf2"
+      XDEBUG_CONFIG: "rmote_port=10000 remote_autostart=1"
+
+volumes:
+  nfsmount:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
+      device: ":/System/Volumes/Data/Users/Shared/www/public_html"
+  nfsmount2:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
+      device: ":/System/Volumes/Data/Users/Shared/www/git"
