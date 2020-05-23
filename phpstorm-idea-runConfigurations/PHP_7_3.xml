@@ -1,0 +1,26 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="PHP 7.3" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+    <deployment type="docker-compose.yml">
+      <settings>
+        <option name="envVars">
+          <list>
+            <DockerEnvVarImpl>
+              <option name="name" value="DOCKER_PHP_VERSION" />
+              <option name="value" value="73" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="DOCKER_PHP_PORT" />
+              <option name="value" value="80" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="DOCKER_MARIADB_VERSION" />
+              <option name="value" value="104" />
+            </DockerEnvVarImpl>
+          </list>
+        </option>
+        <option name="sourceFilePath" value="../../../../../filliph/docker-compose.yml" />
+      </settings>
+    </deployment>
+    <method v="2" />
+  </configuration>
+</component>
