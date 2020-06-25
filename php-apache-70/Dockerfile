@@ -1,7 +1,9 @@
 FROM php:7.0.33-apache-stretch
 
+RUN mkdir -p /usr/share/man/man1
+
 RUN  apt-get update \
-  && apt-get install -y ssl-cert xfonts-utils fontconfig libxrender1 xfonts-75dpi xfonts-base libjpeg62-turbo libxext6 wget curl telnet redis-server \
+  && apt-get install -y ssl-cert xfonts-utils fontconfig libxrender1 xfonts-75dpi xfonts-base libjpeg62-turbo libxext6 wget curl telnet redis-server default-jre \
   && rm -rf /var/lib/apt/lists/*
 
 RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.stretch_amd64.deb \

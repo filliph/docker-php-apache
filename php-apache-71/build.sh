@@ -3,7 +3,7 @@
 set -e
 
 DOCKER_PHP_EXT_INSTALL="bcmath bz2 calendar dba exif gd gettext gmp iconv imap intl mbstring mysqli opcache pdo_dblib pcntl pspell soap sockets xmlrpc xsl zip"
-DOCKER_PHP_PECL_INSTALL="apcu igbinary memcached redis"
+DOCKER_PHP_PECL_INSTALL="apcu igbinary memcached redis xdebug"
 
 RUN_PACKAGES=""
 TMP_PACKAGES=""

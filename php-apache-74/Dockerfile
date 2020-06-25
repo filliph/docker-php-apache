@@ -1,7 +1,9 @@
-FROM php:7.4.6-apache-buster
+FROM php:7.4.7-apache-buster
+
+RUN mkdir -p /usr/share/man/man1
 
 RUN  apt-get update \
-  && apt-get install -y ssl-cert xfonts-utils fontconfig libxrender1 xfonts-75dpi xfonts-base libjpeg62-turbo libxext6 wget telnet redis-server
+  && apt-get install -y ssl-cert xfonts-utils fontconfig libxrender1 xfonts-75dpi xfonts-base libjpeg62-turbo libxext6 wget telnet redis-server default-jre
 
 RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.buster_amd64.deb \
   && dpkg -i wkhtmltox_0.12.5-1.buster_amd64.deb
