@@ -9,16 +9,12 @@ xf2-build() {
     php cmd.php xf-addon:build-release "$1" -v
 }
 
-xf2-commit() {
-    php cmd.php ticktackk-devtools:better-export $1 -stcp
-}
-
 xf2-release() {
-    robo release $1 $2 --repoDir="/Users/Shared/www/public_html/devboards/xf2/src/addons/$1" --changeLogDir="/Users/Shared/www/public_html/devboards/xf2/src/addons/$1/_no_upload" --load-from /Users/filliph
+    robo release $1 $2 --repoDir="$PWD/src/addons/$1" --changeLogDir="$PWD/src/addons/$1/_no_upload" --load-from /var/www/html/robo
 }
 
 xf2-changelog() {
-    robo change:log $1 $2 --changeLogDir="/Users/Shared/www/public_html/devboards/xf2/src/addons/$1/_no_upload" --load-from /Users/filliph
+    robo change:log $1 $2 --changeLogDir="$PWD/src/addons/$1/_no_upload" --load-from /var/www/html/robo
 }
 
 xf2-phpstorm() {
@@ -34,9 +30,6 @@ xf2-export() {
 }
 
 xf2-better-export() {
-    php cmd.php ticktackk-devtools:better-export $1 -st
-}
-
-xf2-full() {
-    php cmd.php ticktackk-devtools:better-export $1 -strcp
+    php cmd.php tck-devtools:better-export $1 --skip-export
+    php cmd.php tck-devtools:build-readme $1 --markdown --copy
 }

@@ -25,5 +25,11 @@ RUN usermod -G staff www-data
 
 COPY override.ini /usr/local/etc/php/conf.d/
 
+COPY bash_profile /root/.bash_profile
+
 COPY . /tmp/.
 RUN /tmp/build.sh
+
+RUN wget http://robo.li/robo.phar \
+  && chmod +x robo.phar \ 
+  && mv robo.phar /usr/local/bin/robo
