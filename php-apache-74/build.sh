@@ -37,9 +37,8 @@ RUN_PACKAGES="$RUN_PACKAGES libxpm4"                 # gd
 TMP_PACKAGES="$TMP_PACKAGES libxpm-dev"              # gd
 TMP_PACKAGES="$TMP_PACKAGES libwebp-dev"             # gd
 RUN_PACKAGES="$RUN_PACKAGES mariadb-client"
-TMP_PACKAGES="$TMP_PACKAGES git"
 RUN_PACKAGES="$RUN_PACKAGES unzip"
-eval "apt update && apt upgrade -y && apt-get update && apt-get install --no-install-recommends -y $TMP_PACKAGES $RUN_PACKAGES"
+eval "apt-get install --no-install-recommends -y $TMP_PACKAGES $RUN_PACKAGES"
 
 eval "ln -s /usr/lib/x86_64-linux-gnu/libsybdb.a /usr/lib/"
 
