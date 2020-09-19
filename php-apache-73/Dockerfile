@@ -1,4 +1,4 @@
-FROM php:7.3.19-apache-stretch
+FROM php:7.3.22-apache-stretch
 
 RUN mkdir -p /usr/share/man/man1
 

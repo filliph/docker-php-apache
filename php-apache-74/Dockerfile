@@ -1,4 +1,4 @@
-FROM php:7.4.8-apache-buster
+FROM php:7.4.10-apache-buster
 
 RUN mkdir -p /usr/share/man/man1
 
