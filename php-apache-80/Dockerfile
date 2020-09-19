@@ -1,4 +1,4 @@
-FROM php:7.4.10-apache-buster
+FROM php:8.0-rc-apache-buster
 
 RUN mkdir -p /usr/share/man/man1
 
@@ -43,6 +43,10 @@ COPY override.ini /usr/local/etc/php/conf.d/
 
 COPY bash_profile /root/.bash_profile
 COPY config /root/.ssh/config
+
+RUN wget https://github.com/FriendsOfPHP/pickle/releases/latest/download/pickle.phar \
+  && chmod +x pickle.phar \
+  && mv pickle.phar /usr/local/bin/pickle
 
 COPY . /tmp/.
 RUN /tmp/build.sh

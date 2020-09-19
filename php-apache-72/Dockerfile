@@ -28,10 +28,10 @@ ARG DOCKER_PHP_EXT_INSTALL
 ARG DOCKER_PHP_PECL_INSTALL
 
 # https://hub.docker.com/_/composer/
-COPY --from=composer:1.10.9 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:1.10.13 /usr/bin/composer /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /root/.composer
-ENV COMPOSER_VERSION 1.10.9
+ENV COMPOSER_VERSION 1.10.13
 
 # https://github.com/wimg/PHPCompatibility/releases
 ENV PHP_COMPATIBILITY_VERSION 8.1.0
