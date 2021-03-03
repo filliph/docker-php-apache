@@ -3,7 +3,7 @@
 set -e
 
 DOCKER_PHP_EXT_INSTALL="bcmath bz2 calendar dba exif gd gettext gmp iconv imap intl mbstring mysqli pdo_mysql pcntl pspell soap sockets xmlrpc xsl zip"
-DOCKER_PHP_PECL_INSTALL="apcu igbinary memcached redis xdebug"
+DOCKER_PHP_PECL_INSTALL="apcu igbinary memcached redis"
 
 RUN_PACKAGES=""
 TMP_PACKAGES=""
@@ -68,8 +68,8 @@ export CFLAGS="$PHP_CFLAGS" CPPFLAGS="$PHP_CPPFLAGS" LDFLAGS="$PHP_LDFLAGS"
 
 docker-php-source extract
 eval "docker-php-ext-install $DOCKER_PHP_EXT_INSTALL"
-eval "pecl install imagick $DOCKER_PHP_PECL_INSTALL"
-eval "docker-php-ext-enable imagick $DOCKER_PHP_PECL_INSTALL"
+eval "pecl install imagick $DOCKER_PHP_PECL_INSTALL xdebug-beta"
+eval "docker-php-ext-enable imagick $DOCKER_PHP_PECL_INSTALL xdebug"
 /tmp/build_apache.sh
 docker-php-source delete
 

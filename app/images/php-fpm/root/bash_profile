@@ -1,0 +1,35 @@
+#+-----------+
+#| XenForo 2 |
+#+-----------+
+
+alias xf2='php cmd.php $*'
+
+xf2-build() {
+    php cmd.php xf-addon:sync-json "$1" -v -f
+    php cmd.php xf-addon:build-release "$1" -v
+}
+
+xf2-release() {
+    robo release $1 $2 --repoDir="$PWD/src/addons/$1" --changeLogDir="$PWD/src/addons/$1/_no_upload" --load-from /var/www/html/robo
+}
+
+xf2-changelog() {
+    robo change:log $1 $2 --changeLogDir="$PWD/src/addons/$1/_no_upload" --load-from /var/www/html/robo
+}
+
+xf2-phpstorm() {
+    php cmd.php xf-dev:generate-phpstorm-meta
+}
+
+xf2-import() {
+    php cmd.php xf-dev:import --addon=$1
+}
+
+xf2-export() {
+    php cmd.php xf-dev:export --addon=$1
+}
+
+xf2-better-export() {
+    php cmd.php tck-devtools:better-export $1 --skip-export
+    php cmd.php tck-devtools:build-readme $1 --markdown --copy
+}
