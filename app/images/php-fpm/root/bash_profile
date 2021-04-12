@@ -29,6 +29,10 @@ xf2-export() {
     php cmd.php xf-dev:export --addon=$1
 }
 
+xf2-api-docs() {
+    php cmd.php xf-dev:generate-api-docs --force --renderer=xf2Html --target=src/addons/$1/_no_upload/api.html $1
+}
+
 xf2-better-export() {
     php cmd.php tck-devtools:better-export $1 --skip-export
     php cmd.php tck-devtools:build-readme $1 --markdown --copy
