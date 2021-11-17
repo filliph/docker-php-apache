@@ -38,12 +38,10 @@ RUN set -xe; \
         wget \
     # pecl installs
     && docker-php-ext-install exif \
-    && pecl install xdebug-beta \
     && pecl install memcached \
     && pecl install redis \
     && pecl install apcu \
     # enable pecl installed extentions
-    && docker-php-ext-enable xdebug \
     && docker-php-ext-enable memcached \
     && docker-php-ext-enable redis \
     && docker-php-ext-enable apcu \
@@ -71,19 +69,14 @@ RUN set -xe; \
         pspell \
         soap \
         sockets \
-        xmlrpc \
         xsl \
         zip \
     # syslogd
     && apt-get install -y rsyslog \
-    && wget http://robo.li/robo.phar \
-    && chmod +x robo.phar \ 
-    && mv robo.phar /usr/local/bin/robo \
     # cleanup
     && pecl clear-cache
-COPY ./conf/php-fpm-xdebug.conf /usr/local/etc/php-fpm.conf
+COPY ./conf/php-fpm.conf /usr/local/etc/php-fpm.conf
 COPY ./conf/00-php.ini /usr/local/etc/php/conf.d/00-php.ini
-COPY ./conf/10-xdebug.ini /usr/local/etc/php/conf.d/10-xdebug.ini
 COPY ./conf/zzzz-override.ini /usr/local/etc/php/conf.d/zzzz-override.ini
 COPY ./conf/docker-sendmail.ini /usr/local/etc/php/conf.d/docker-sendmail.ini
 
@@ -105,9 +98,9 @@ COPY ./root/bash_profile /root/.bash_profile
 COPY ./root/ssh/config /root/.ssh/config
 COPY ./root/ssh/github.pkey /root/.ssh/github
 
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
-RUN apt-get -y install nodejs
-RUN npm install
+#RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+#RUN apt-get -y install nodejs
+#RUN npm install
 
 RUN rm -rf \
     /var/lib/apt/lists/* \
@@ -127,11 +120,8 @@ ENV COMPOSER_VERSION 2
 # https://github.com/wimg/PHPCompatibility/releases
 ENV PHP_COMPATIBILITY_VERSION 8.1.0
 
+RUN composer global require consolidation/robo
 RUN composer global require friendsofphp/php-cs-fixer
-
-RUN wget http://robo.li/robo.phar \
-  && chmod +x robo.phar \ 
-  && mv robo.phar /usr/local/bin/robo
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 

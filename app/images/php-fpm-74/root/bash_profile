@@ -10,11 +10,11 @@ xf2-build() {
 }
 
 xf2-release() {
-    robo release $1 $2 --repoDir="$PWD/src/addons/$1" --changeLogDir="$PWD/src/addons/$1/_no_upload" --load-from /var/www/html/robo
+    /root/.composer/vendor/bin/robo release $1 $2 --repoDir="$PWD/src/addons/$1" --changeLogDir="$PWD/src/addons/$1/_no_upload" --load-from /var/www/html/robo
 }
 
 xf2-changelog() {
-    robo change:log $1 $2 --changeLogDir="$PWD/src/addons/$1/_no_upload" --load-from /var/www/html/robo
+    /root/.composer/vendor/bin/robo change:log $1 $2 --changeLogDir="$PWD/src/addons/$1/_no_upload" --load-from /var/www/html/robo
 }
 
 xf2-phpstorm() {
