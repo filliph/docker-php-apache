@@ -19,7 +19,7 @@ services:
         volumes:
             - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/logs/mariadb:/var/log/mysql:delegated"
             - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/resources/etc/mysql/conf.d/:/etc/mysql/conf.d/"
-            - "/System/Volumes/Data/Users/Shared/www/mysql:/var/lib/mysql"
+            - "nfsmount3:/var/lib/mysql"
     httpd:
         build:
             context: "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/images/httpd"
@@ -32,12 +32,12 @@ services:
             - "9080:9080"
             - "9443:9443"
         volumes:
-            - "shared:/shared:cached" # allow to use the php-fpm socket
+            - "shared:/shared" # allow to use the php-fpm socket
             - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/logs/httpd:/var/log/httpd:delegated"
-            - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/resources/certificates:/certificates:cached"
-            - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/resources/usr/local/apache2/conf.d:/usr/local/apache2/conf.d:cached"
-            - "/System/Volumes/Data/Users/Shared/www/public_html:/var/www/html"
-
+            - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/resources/certificates:/certificates"
+            - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/resources/usr/local/apache2/conf.d:/usr/local/apache2/conf.d"
+            - "nfsmount:/var/www/html"
+            - "nfsmount2:/var/www/git"
     nginx:
         build:
             context: "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/images/nginx"
@@ -59,17 +59,19 @@ services:
             - "8080:8080"
             - "443:443"
         volumes:
-            - "shared:/shared:cached" # allow to use the php-fpm socket
+            - "shared:/shared" # allow to use the php-fpm socket
             - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/logs/nginx:/var/log/nginx:delegated"
-            - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/resources/certificates:/certificates:cached"
-            - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/resources/etc/nginx/conf.d:/etc/nginx/conf.d:cached"
+            - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/resources/certificates:/certificates"
+            - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/resources/etc/nginx/conf.d:/etc/nginx/conf.d"
             - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/resources/etc/nginx/sites-available:/etc/nginx/sites-available"
             - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/resources/etc/nginx/sites-enabled:/etc/nginx/sites-enabled"
+            - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/resources/etc/nginx/devboards-available:/etc/nginx/devboards-available"
+            - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/resources/etc/nginx/devboards-enabled:/etc/nginx/devboards-enabled"
             - "nfsmount:/var/www/html"
             - "nfsmount2:/var/www/git"
     php-fpm:
         build:
-            context: "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/images/php-fpm"
+            context: "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/images/php-fpm-${DOCKER_PHP_VERSION}"
         container_name: "php-fpm"
         depends_on:
             - "mysql"
@@ -82,14 +84,14 @@ services:
         networks: &php-networks
             - "dev_network"
         volumes: &php-volumes
-            - "shared:/shared:cached" # expose php-fpm socket
+            - "shared:/shared" # expose php-fpm socket
             - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/logs/php-fpm:/var/log/php-fpm:delegated"
-            - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/resources/certificates:/usr/local/share/ca-certificates:cached" # Mount extra certificates
+            - "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/resources/certificates:/usr/local/share/ca-certificates" # Mount extra certificates
             - "nfsmount:/var/www/html"
             - "nfsmount2:/var/www/git"
     php-fpm-xdebug:
         build:
-            context: "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/images/php-fpm"
+            context: "/System/Volumes/Data/Users/Shared/www/git/docker-php-apache/app/images/php-fpm-${DOCKER_PHP_VERSION}"
             dockerfile: DockerfileXDebug
         container_name: "php-fpm-xdebug"
         environment: *php-env
@@ -109,6 +111,12 @@ volumes:
             type: nfs
             o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
             device: ":/System/Volumes/Data/Users/Shared/www/git"
+    nfsmount3:
+        driver: local
+        driver_opts:
+            type: nfs
+            o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
+            device: ":/System/Volumes/Data/Users/Shared/www/mysql"
     shared:
 
 networks:

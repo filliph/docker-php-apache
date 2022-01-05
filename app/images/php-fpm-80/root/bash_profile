@@ -37,3 +37,5 @@ xf2-better-export() {
     php cmd.php tck-devtools:better-export $1 --skip-export
     php cmd.php tck-devtools:build-readme $1 --markdown --copy
 }
+
+export PATH="$PATH:$HOME/.composer/vendor/bin"
