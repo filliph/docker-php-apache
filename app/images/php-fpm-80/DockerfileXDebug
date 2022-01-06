@@ -38,7 +38,7 @@ RUN set -xe; \
         wget \
     # pecl installs
     && docker-php-ext-install exif \
-    && pecl install xdebug-beta \
+    && pecl install xdebug \
     && pecl install memcached \
     && pecl install redis \
     && pecl install apcu \

@@ -16,6 +16,7 @@ RUN set -xe; \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libpng-dev \
+	libwebp-dev \
         # for mbstring
         libonig-dev \
         # memchached extension
@@ -48,7 +49,7 @@ RUN set -xe; \
     && docker-php-ext-enable exif \
     && docker-php-ext-enable opcache \
     # built in extensions install
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/ \
     && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install -j$(nproc) \
         bcmath \

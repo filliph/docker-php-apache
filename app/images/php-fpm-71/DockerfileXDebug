@@ -16,6 +16,7 @@ RUN set -xe; \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libpng-dev \
+	libwebp-dev \
         # for mbstring
         libonig-dev \
         # memchached extension
@@ -38,19 +39,17 @@ RUN set -xe; \
         wget \
     # pecl installs
     && docker-php-ext-install exif \
-    && pecl install xdebug-beta \
     && pecl install memcached \
     && pecl install redis \
     && pecl install apcu \
     # enable pecl installed extentions
-    && docker-php-ext-enable xdebug \
     && docker-php-ext-enable memcached \
     && docker-php-ext-enable redis \
     && docker-php-ext-enable apcu \
     && docker-php-ext-enable exif \
     && docker-php-ext-enable opcache \
     # built in extensions install
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/ \
     && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install -j$(nproc) \
         bcmath \
@@ -77,9 +76,8 @@ RUN set -xe; \
     && apt-get install -y rsyslog \
     # cleanup
     && pecl clear-cache
-COPY ./conf/php-fpm-xdebug.conf /usr/local/etc/php-fpm.conf
+COPY ./conf/php-fpm.conf /usr/local/etc/php-fpm.conf
 COPY ./conf/00-php.ini /usr/local/etc/php/conf.d/00-php.ini
-COPY ./conf/10-xdebug.ini /usr/local/etc/php/conf.d/10-xdebug.ini
 COPY ./conf/zzzz-override.ini /usr/local/etc/php/conf.d/zzzz-override.ini
 COPY ./conf/docker-sendmail.ini /usr/local/etc/php/conf.d/docker-sendmail.ini
 
